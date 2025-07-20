@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "952254846828",
+    "project_id": "intollerance-app",
+    "storage_bucket": "intollerance-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952254846828:android:777fd6bdb22761f2668549",
+        "android_client_info": {
+          "package_name": "com.example.intol_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4qy5Eg1nI6JRcKIRg6BwBwPOivP58SgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
