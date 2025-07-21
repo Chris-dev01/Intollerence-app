@@ -27,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
 
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacementNamed(context, '/redirect');
       }
     });
 
@@ -47,7 +47,7 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
         children: [
           // Image de fond
           Image.asset(
-            'lib/images/background.jpeg',
+            'images/background.jpeg',
             fit: BoxFit.cover,
           ),
           // Contenu au-dessus de l'image
@@ -57,7 +57,7 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('lib/images/logo3.png', height: 120),
+                  Image.asset('images/logo3.png', height: 120),
                   const SizedBox(height: 30),
                   const Text(
                     'Intol',
