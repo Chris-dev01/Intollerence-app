@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intol_application/services/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -118,11 +120,46 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildScannerPage() {
-    return const Center(
-      child: Icon(Icons.qr_code_scanner, size: 100, color: Colors.teal),
-    );
-  }
+Widget _buildScannerPage() {
+  return Stack(
+    children: [
+      MobileScanner(
+        controller: MobileScannerController(
+          facing: CameraFacing.back,
+          torchEnabled: false,
+        ),
+        onDetect: (capture) {
+          final List<Barcode> barcodes = capture.barcodes;
+          for (final barcode in barcodes) {
+            final String? code = barcode.rawValue;
+            if (code != null) {
+              debugPrint('Code scanné: $code');
+              
+              _handleBarcodeScanned(code);
+              break;
+            }
+          }
+        },
+      ),
+      Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          margin: const EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Text(
+            "Scannez un code-barres",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 
   Widget _buildProfilePage() {
     return Center(
@@ -147,4 +184,27 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+
+  void _handleBarcodeScanned(String code) {
+  // 👉 Empêche les scans multiples
+  if (!mounted) return;
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Code scanné'),
+      content: Text('Valeur : $code'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+
+  // 👉 Tu peux ici envoyer le `code` vers Firestore, Supabase ou une API
 }
+
+}
+

@@ -38,7 +38,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^3.15.1
   firebase_auth: ^5.6.2
-  google_sign_in: ^7.1.1
+  google_sign_in: ^6.1.5
+  logger: ^2.0.2
+
+  mobile_scanner: ^3.5.4
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +69,6 @@ flutter:
     - assets/images/logo3.png
     - assets/images/connection.png
     - assets/images/background.jpeg
-    - assets/images/Google.png
     - assets/images/Google.png
 
 

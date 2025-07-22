@@ -43,43 +43,52 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Image de fond
-          Image.asset(
-            'images/background.jpeg',
-            fit: BoxFit.cover,
-          ),
-          // Contenu au-dessus de l'image
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('images/logo3.png', height: 120),
-                  const SizedBox(height: 30),
-                  const Text(
-                    'Intol',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Votre allié contre les allergies et intolérances',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  const SizedBox(height: 60),
-                  AnimatedBuilder(
-                    animation: _bounceAnimation,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(0, -_bounceAnimation.value),
-                        child: child,
-                      );
-                    },
-                    child: Container(
+  fit: StackFit.expand,
+  children: [
+    // Image de fond
+    Image.asset(
+      'assets/images/background.jpeg', // à placer dans assets/images
+      fit: BoxFit.cover,
+    ),
+      Container(
+        color: Colors.white.withOpacity(0.3),
+      ),
+
+    // Contenu principal
+    Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/logo3.png', height: 120),
+            const SizedBox(height: 30),
+            const Text(
+              'Intol',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.5,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Votre allié contre les allergies et intolérances',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.white70),
+            ),
+            const SizedBox(height: 60),
+            AnimatedBuilder(
+              animation: _bounceAnimation,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(0, -_bounceAnimation.value),
+                  child: child,
+                );
+              },
+              
+              child: Container(
                       width: 20,
                       height: 20,
                       decoration: const BoxDecoration(
@@ -87,13 +96,14 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                ],
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    ),
+  ],
+),
+
     );
   }
 }

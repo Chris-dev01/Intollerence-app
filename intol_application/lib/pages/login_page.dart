@@ -24,70 +24,46 @@ class _LoginPageState extends State<LoginPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFCCE5E1), Color(0xFFF2F7F5)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+  body: Stack(
+    fit: StackFit.expand,
+    children: [
+      Image.asset(
+        'assets/images/background.jpeg',
+        fit: BoxFit.cover,
+      ),
+
+      Container(
+        color: Colors.white.withOpacity(0.3),
+      ),
+
+      Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+          
             child: Form(
               key: _formKey,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-
-                  // Logo
-                  Image.asset(
-                    'lib/images/logo3.png',
-                    height: 100,
-                  ),
-                  const SizedBox(height: 10),
+                  Image.asset('assets/images/logo3.png', height: 90),
+                  const SizedBox(height: 20),
                   Text(
                     _forLogin ? "Connexion" : "Créer un compte",
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.teal[800],
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 30),
-
-                  // Nom (si inscription)
                   if (!_forLogin)
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: _inputDecoration("Nom", Icons.person),
-                      validator: (value) =>
-                          value == null || value.isEmpty ? 'Nom requis' : null,
-                    ),
-
+                    _glassInput("Nom", _nameController, Icons.person),
                   if (!_forLogin) const SizedBox(height: 20),
-
-                  // Email
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: _inputDecoration("Email", Icons.email),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Email requis' : null,
-                  ),
+                  _glassInput("Email", _emailController, Icons.email),
                   const SizedBox(height: 20),
-
-                  // Mot de passe
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: _inputDecoration("Mot de passe", Icons.lock),
-                    validator: (value) =>
-                        value == null || value.isEmpty ? 'Mot de passe requis' : null,
-                  ),
+                  _glassInput("Mot de passe", _passwordController, Icons.lock, isPassword: true),
                   const SizedBox(height: 30),
-
-                  // Bouton
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -106,53 +82,70 @@ class _LoginPageState extends State<LoginPage> {
                               style: const TextStyle(fontSize: 16)),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
-                  // Lien bas
                   TextButton(
                     onPressed: () {
-                      setState(() {
-                        _forLogin = !_forLogin;
-                      });
+                      setState(() => _forLogin = !_forLogin);
                     },
                     child: Text(
                       _forLogin
                           ? "Je n'ai pas de compte, m'inscrire"
                           : "J'ai déjà un compte, me connecter",
-                      style: TextStyle(color: Colors.teal[700]),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
-
-                  const Divider(),
-
+                  const Divider(color: Colors.white38),
                   ElevatedButton.icon(
-                    onPressed: (){},
-                    icon: Image.asset("lib/images/Google.png", height: 35,),
-                    label : const Text("Continue with Google")
-                  )
+                    onPressed: _handleGoogleSignIn,
+                    icon: Image.asset("assets/images/Google.png", height: 35),
+                    label: const Text("Continuer avec Google"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
-      ),
-    );
+      )
+    ],
+  ),
+);
   }
 
-  InputDecoration _inputDecoration(String label, IconData icon) {
-    return InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon, color: Colors.teal),
-      filled: true,
-      fillColor: Colors.white.withOpacity(0.9),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.teal),
+
+  Future<void> _handleGoogleSignIn() async {
+  setState(() => _isLoading = true);
+
+  try {
+    final result = await Auth().signInWithGoogle();
+
+    if (result != null) {
+      Navigator.pushReplacementNamed(context, '/questionnaire'); // ou '/home'
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Connexion Google annulée."),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    }
+  } catch (e) {
+    logger.e("Erreur Google Sign-In: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Erreur Google Sign-In: $e"),
+        backgroundColor: Colors.redAccent,
       ),
     );
+  } finally {
+    if (mounted) setState(() => _isLoading = false);
   }
+}
+
+
 
 
   Future<void> _submitForm() async {
@@ -196,183 +189,31 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-class LoginPage extends StatelessWidget {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  LoginPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Image de fond
-          Image.asset(
-            'lib/images/background.jpeg',
-            fit: BoxFit.cover,
-          ),
-
-          // Back button
-          Positioned(
-            top: 40,
-            left: 16,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-
-          Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Welcome back',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        prefixIcon: const Icon(Icons.email_outlined),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                              activeColor: Colors.blue,
-                            ),
-                            const Text("Remember me"),
-                          ],
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Forgot password?",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: Colors.blueAccent,
-                         /* TextStyle(
-                          color: Colors.black),*/
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Sign in',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    const Text("Sign in with"),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Don't have an account?"),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/register');
-                          },
-                          child: const Text("Sign up"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+Widget _glassInput(String label, TextEditingController controller, IconData icon, {bool isPassword = false}) {
+  return TextFormField(
+    controller: controller,
+    obscureText: isPassword,
+    style: const TextStyle(color: Colors.white),
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.white70),
+      prefixIcon: Icon(icon, color: Colors.white),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(15),
       ),
-    );
-  }
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.circular(15),
+      ),
+    ),
+    validator: (value) => value == null || value.isEmpty ? '$label requis' : null,
+  );
 }
 
 
 
-*/
+
+

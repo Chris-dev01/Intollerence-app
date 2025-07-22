@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger();
 
 class QuestionnairePage extends StatefulWidget {
   const QuestionnairePage({super.key});
@@ -101,7 +104,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> with SingleTicker
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: () {
-                print("Intolérances sélectionnées : $selectedItems");
+                logger.i("Intolérances sélectionnées : $selectedItems");
                 Navigator.pushReplacementNamed(context, '/home'); // ou prochaine étape
               },
               child: const Center(
