@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage>{
                 onPressed: () async{
                   if(_formKey.currentState!.validate()){
                     try{
-                      await Auth().loginWithEmailAndPassword(_emailController.text, _passwordController.text);
+                       Auth().loginWithEmailAndPassword(_emailController.text, _passwordController.text);
                     } on FirebaseAuthException catch(e){
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content:Text("${e.message}"),
