@@ -146,16 +146,47 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Divider(color: Color.fromARGB(255, 122, 122, 122)),
-                    ElevatedButton.icon(
-                      onPressed: _handleGoogleSignIn,
-                      icon: Image.asset("assets/images/Google.png", height: 35),
-                      label: const Text("Continuer avec Google"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Divider(
+                              color: Color.fromARGB(255, 122, 122, 122),
+                              thickness: 1,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "ou continuer avec",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Expanded(
+                            child: Divider(
+                              color: Color.fromARGB(255, 122, 122, 122),
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _socialIcon("assets/images/Google.png", _handleGoogleSignIn),
+                        const SizedBox(width: 20),
+                        _socialIcon("assets/images/Facebook.png", _handleGoogleSignIn),
+                        const SizedBox(width: 20),
+                        _socialIcon("assets/images/twitter.png", _handleGoogleSignIn),
+                      ],
+                    ),
+
                     const SizedBox(height: 24),
                     const Text(
                       'By continuing, you agree to our Terms of Service and Privacy Policy.',
@@ -289,6 +320,30 @@ class _LoginPageState extends State<LoginPage> {
     validator: (value) => value == null || value.isEmpty ? '$label requis' : null,
   );
 }
+
+Widget _socialIcon(String assetPath, VoidCallback onTap) {
+  return Container(
+    width: 55,
+    height: 55,
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 6,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: IconButton(
+      onPressed: onTap,
+      icon: Image.asset(assetPath, height: 28),
+      splashRadius: 28,
+    ),
+  );
+}
+
 
 }
 

@@ -70,6 +70,8 @@ flutter:
     - assets/images/connection.png
     - assets/images/background.jpeg
     - assets/images/Google.png
+    - assets/images/twitter.png
+    - assets/images/Facebook.png
 
 
   fonts:
