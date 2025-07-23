@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(14),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(24),
                           ),
                           child: Center(
                             child: _isLoading
@@ -156,8 +156,16 @@ class _LoginPageState extends State<LoginPage> {
                         foregroundColor: Colors.black,
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'By continuing, you agree to our Terms of Service and Privacy Policy.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
                   ],
+                  
                 ),
+              
               ),
             ),
           )
@@ -248,13 +256,13 @@ class _LoginPageState extends State<LoginPage> {
     style: const TextStyle(color: Colors.black),
     decoration: InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Color.fromARGB(255, 168, 166, 166)),
-      prefixIcon: Icon(icon, color: Color.fromARGB(255, 168, 166, 166)),
+      labelStyle: const TextStyle(color: Color.fromARGB(255, 136, 135, 135)),
+      prefixIcon: Icon(icon, color: Color.fromARGB(255, 136, 135, 135)),
       suffixIcon: isPassword
           ? IconButton(
               icon: Icon(
                 isVisible ? Icons.visibility : Icons.visibility_off,
-                color: const Color.fromARGB(255, 168, 166, 166),
+                color: const Color.fromARGB(255, 136, 135, 135),
               ),
               onPressed: () {
                 setState(() {
