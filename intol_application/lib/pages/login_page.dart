@@ -117,6 +117,30 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20),
                     _glassInput("Mot de passe", _passwordController, Icons.lock, isPassword: true),
                     const SizedBox(height: 20),
+                    if (_forLogin)
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.only(top: 1, bottom: 1),
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/reset-password');
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: const Text(
+                            "Mot de passe oublié ?",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.teal,
+                            ),
+                          ),
+                        ),
+                      ),
+
                     if (!_forLogin)
                       _glassInput("Confirmer le mot de passe", _confirmPasswordController, Icons.lock, isPassword: true, isConfirm: true),
                     const SizedBox(height: 30),
@@ -198,11 +222,23 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               
               ),
+              
             ),
-          )
+            
+          ),
+            
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/questionnaire');
+              },
+              child: const Text("questionnaire", style: TextStyle(color: Colors.black)),
+            ),
+
         ],
       ),
+      
     );
+    
   }
 
   Future<void> _handleGoogleSignIn() async {

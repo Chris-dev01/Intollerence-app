@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intol_application/firebase_options.dart';
+import 'package:intol_application/pages/reset_password_page.dart';
 import 'pages/welcome_page.dart';
 import 'pages/login_page.dart';
 import 'pages/questionnaire_page.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(title: "Se connecter",),
         '/questionnaire': (context) => QuestionnairePage(),
         '/home': (context) => const HomePage(title: "Accueil",),
+        '/reset-password': (context) => const ResetPasswordPage(),
       },
     );
   }

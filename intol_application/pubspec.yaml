@@ -72,7 +72,11 @@ flutter:
     - assets/images/Google.png
     - assets/images/twitter.png
     - assets/images/Facebook.png
-
+    - assets/images/arachides.png
+    - assets/images/lactose.jpg
+    - assets/images/gluten.png
+    - assets/images/oeufs.png
+    - assets/images/poisson.png
 
   fonts:
     - family: Pacifico

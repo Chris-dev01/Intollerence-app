@@ -45,24 +45,29 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
       body: Stack(
   fit: StackFit.expand,
   children: [
-    // Image de fond
-    Image.asset(
-      'assets/images/background.jpeg', // à placer dans assets/images
-      fit: BoxFit.cover,
-    ),
-      Container(
-        color: Colors.white.withOpacity(0.3),
-      ),
+    
+    Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 59, 131, 246),
+                Color.fromARGB(255, 8, 181, 150)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
 
-    // Contenu principal
-    Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/logo3.png', height: 120),
-            const SizedBox(height: 30),
+        // ✅ Contenu principal
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/logo3.png', height: 120),
+                const SizedBox(height: 30),
             const Text(
               'Intol',
               style: TextStyle(
