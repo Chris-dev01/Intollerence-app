@@ -284,7 +284,20 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                             onPressed: customIntolerance.trim().isEmpty
                                 ? null
                                 : addCustomIntolerance,
-                            child: const Text('Ajouter'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(140, 8, 181, 149),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Ajouter',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -297,24 +310,53 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                         ),
                       ],
                     ),
+
                   ],
                 ),
               )
             ],
-            const SizedBox(height: 16),
-            if (selectedCount > 0)
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: selectedIntolerances
-                    .where((i) => i.selected)
-                    .map((item) => Chip(
-                          label: Text(item.name),
-                          onDeleted: () => toggleIntolerance(item.id),
-                          backgroundColor: Colors.green[100],
-                        ))
-                    .toList(),
+          const SizedBox(height: 16),
+          if (selectedCount > 0)
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 14),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 239, 250, 249), // fond doux
+                border: Border.all(
+                  color: Colors.teal, // couleur du cadre
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Intolérances sélectionnées',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: selectedIntolerances
+                        .where((i) => i.selected)
+                        .map((item) => Chip(
+                              label: Text(item.name),
+                              onDeleted: () => toggleIntolerance(item.id),
+                              backgroundColor: Colors.green[100],
+                            ))
+                        .toList(),
+                  ),
+                ],
+              ),
+            ),
+
+
             const SizedBox(height: 24),
             InkWell(
               onTap: selectedCount == 0 ? null : handleSubmit,
