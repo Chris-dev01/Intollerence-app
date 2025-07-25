@@ -43,6 +43,8 @@ dependencies:
 
   mobile_scanner: ^3.5.4
 
+  dotted_border: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,7 +68,9 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/logo.png
     - assets/images/logo3.png
+    - assets/images/logo5.png
     - assets/images/connection.png
     - assets/images/background.jpeg
     - assets/images/Google.png
@@ -77,6 +81,10 @@ flutter:
     - assets/images/gluten.png
     - assets/images/oeufs.png
     - assets/images/poisson.png
+    - assets/images/Fruit-de-mer.png
+    - assets/images/soja.png
+    - assets/images/aliments.png
+
 
   fonts:
     - family: Pacifico

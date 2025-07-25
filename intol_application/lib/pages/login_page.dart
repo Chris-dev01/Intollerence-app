@@ -39,19 +39,33 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          
           Center(
+            
+             
+
+            
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(14),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset('assets/images/logo3.png', height: 90),
+                  children: [ 
+                    Image.asset('assets/images/logo5.png', height: 90),
                     const Text(
                       'Intol',
                       style: TextStyle(fontFamily: 'Pacifico', fontSize: 24),
                     ),
+                   const SizedBox(height: 24),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/questionnaire');
+                      },
+                      child: const Text("questionnaire", style: TextStyle(color: Colors.black)),
+                    ),
+
                     const SizedBox(height: 24),
                     Container(
                     width: double.infinity,
@@ -227,13 +241,7 @@ class _LoginPageState extends State<LoginPage> {
             
           ),
             
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/questionnaire');
-              },
-              child: const Text("questionnaire", style: TextStyle(color: Colors.black)),
-            ),
-
+           
         ],
       ),
       
