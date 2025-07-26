@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intol_application/services/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+
+import 'package:intol_application/pages/accueil_page.dart';
+import 'package:intol_application/pages/scanner_page.dart';
+import 'package:intol_application/pages/profile_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -21,11 +24,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      _buildWelcomePage(),
-      _buildScannerPage(),
-      _buildProfilePage(),
-    ];
+  final List<Widget> pages = [
+    const AccueilPage(),
+    ScannerPage(onCodeScanned: _handleBarcodeScanned),
+    ProfilePage(user: user),
+  ];
+
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -48,6 +52,12 @@ class _HomePageState extends State<HomePage> {
       ),
       body: AnimatedSwitcher(
         duration: _animationDuration,
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
         child: Container(
           key: ValueKey<int>(_currentIndex),
           decoration: const BoxDecoration(
@@ -60,6 +70,7 @@ class _HomePageState extends State<HomePage> {
           child: pages[_currentIndex],
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: const Color(0xFF009688),
@@ -85,125 +96,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWelcomePage() {
-    return Center(
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        elevation: 10,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(Icons.health_and_safety, size: 80, color: Colors.teal),
-              SizedBox(height: 20),
-              Text(
-                "Bienvenue dans IntolScan !",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.teal,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Scannez, identifiez vos intolérances, restez en bonne santé.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-Widget _buildScannerPage() {
-  return Stack(
-    children: [
-      MobileScanner(
-        controller: MobileScannerController(
-          facing: CameraFacing.back,
-          torchEnabled: false,
-        ),
-        onDetect: (capture) {
-          final List<Barcode> barcodes = capture.barcodes;
-          for (final barcode in barcodes) {
-            final String? code = barcode.rawValue;
-            if (code != null) {
-              debugPrint('Code scanné: $code');
-              
-              _handleBarcodeScanned(code);
-              break;
-            }
-          }
-        },
-      ),
-      Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          margin: const EdgeInsets.only(top: 80),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const Text(
-            "Scannez un code-barres",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-
-  Widget _buildProfilePage() {
-    return Center(
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.person, size: 80, color: Colors.teal),
-              const SizedBox(height: 10),
-              Text(
-                user?.email ?? 'Utilisateur inconnu',
-                style: const TextStyle(fontSize: 18, color: Colors.black87),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
   void _handleBarcodeScanned(String code) {
-  // 👉 Empêche les scans multiples
-  if (!mounted) return;
   showDialog(
     context: context,
-    builder: (_) => AlertDialog(
-      title: const Text('Code scanné'),
-      content: Text('Valeur : $code'),
+    builder: (context) => AlertDialog(
+      title: const Text("Code scanné"),
+      content: Text(code),
       actions: [
         TextButton(
+          child: const Text("OK"),
           onPressed: () => Navigator.pop(context),
-          child: const Text('OK'),
         ),
       ],
     ),
   );
-
-  // 👉 Tu peux ici envoyer le `code` vers Firestore, Supabase ou une API
 }
 
 }
