@@ -7,6 +7,9 @@ import 'pages/login_page.dart';
 import 'pages/questionnaire_page.dart';
 import 'pages/home_page.dart';
 import 'pages/redirection_page.dart';
+import 'pages/scanner_page.dart';
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomePage(),
+        '/scanner': (context) => const ScannerPage(),   
         '/redirect': (context) => const RedirectionPage(),
         '/login': (context) => LoginPage(title: "Se connecter",),
         '/questionnaire': (context) => QuestionnairePage(),

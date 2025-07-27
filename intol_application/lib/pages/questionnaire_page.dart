@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:intol_application/services/firebase/auth.dart';
 
 class Intolerance {
   final int id;
@@ -426,10 +428,19 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     }
   }
 
-  void handleSubmit() {
-    final selected = selectedIntolerances.where((i) => i.selected).toList();
-    debugPrint('Intolérances sélectionnées: ${selected.map((e) => e.name)}');
+  Future<void> handleSubmit() async {
+    final selected = selectedIntolerances
+        .where((i) => i.selected)
+        .map((e) => e.name)
+        .toList();
+        
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await Auth().updateUserIntolerances(uid, selected);
+
+    debugPrint('Intolérances enregistrées: $selected');
     Navigator.pushNamed(context, '/home');
   }
+
 
 }

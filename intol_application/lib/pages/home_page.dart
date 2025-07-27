@@ -6,7 +6,6 @@ import 'package:intol_application/pages/accueil_page.dart';
 import 'package:intol_application/pages/scanner_page.dart';
 import 'package:intol_application/pages/profile_page.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -24,12 +23,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-  final List<Widget> pages = [
-    const AccueilPage(),
-    ScannerPage(onCodeScanned: _handleBarcodeScanned),
-    ProfilePage(user: user),
-  ];
-
+    final List<Widget> pages = [
+      const AccueilPage(),
+      Container(
+        alignment: Alignment.center,
+        child: ElevatedButton.icon(
+          icon: const Icon(Icons.qr_code_scanner),
+          label: const Text("Lancer le scanner"),
+          onPressed: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ScannerPage()),
+            );
+            if (result != null && result is String) {
+              _handleBarcodeScanned(result);
+            }
+          },
+        ),
+      ),
+      ProfilePage(user: user),
+    ];
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -70,7 +83,6 @@ class _HomePageState extends State<HomePage> {
           child: pages[_currentIndex],
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: const Color(0xFF009688),
@@ -97,20 +109,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handleBarcodeScanned(String code) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text("Code scanné"),
-      content: Text(code),
-      actions: [
-        TextButton(
-          child: const Text("OK"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
-    ),
-  );
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Code scanné"),
+        content: Text(code),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
 }
-
-}
-

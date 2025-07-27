@@ -1,11 +1,8 @@
-// lib/pages/scanner_page.dart
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScannerPage extends StatelessWidget {
-  final Function(String) onCodeScanned;
-
-  const ScannerPage({super.key, required this.onCodeScanned});
+  const ScannerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,7 @@ class ScannerPage extends StatelessWidget {
             for (final barcode in barcodes) {
               final String? code = barcode.rawValue;
               if (code != null) {
-                onCodeScanned(code);
+                Navigator.pop(context, code);
                 break;
               }
             }

@@ -255,6 +255,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final result = await Auth().signInWithGoogle();
 
+      if (!mounted) return;
+
       if (result != null) {
         Navigator.pushReplacementNamed(context, '/questionnaire');
       } else {
@@ -266,31 +268,37 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
-      logger.e("Erreur Google Sign-In: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Erreur Google Sign-In: $e"),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
+      if (mounted) {
+        logger.e("Erreur Google Sign-In: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Erreur Google Sign-In: $e"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
+
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (!_forLogin && _passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Les mots de passe ne correspondent pas."),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Les mots de passe ne correspondent pas."),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
       return;
     }
 
+    
     setState(() => _isLoading = true);
 
     try {
@@ -299,15 +307,21 @@ class _LoginPageState extends State<LoginPage> {
           _emailController.text,
           _passwordController.text,
         );
-        Navigator.pushReplacementNamed(context, '/home');
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       } else {
         await Auth().createUserWithEmailAndPassword(
           _emailController.text,
           _passwordController.text,
+          _nameController.text
         );
-        Navigator.pushReplacementNamed(context, '/questionnaire');
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/questionnaire');
+        }
       }
     } on FirebaseAuthException catch (e) {
+    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message ?? 'Une erreur est survenue'),
@@ -316,10 +330,13 @@ class _LoginPageState extends State<LoginPage> {
           showCloseIcon: true,
         ),
       );
-    } finally {
+    }
+  } finally {
+    if (mounted) {
       setState(() => _isLoading = false);
     }
   }
+}
 
 
   Widget _glassInput(String label, TextEditingController controller, IconData icon, {bool isPassword = false, bool isConfirm = false}) {

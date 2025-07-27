@@ -11,7 +11,7 @@ class AccueilPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const Header(title: 'Welcome', subtitle: 'Scan. Detect. Stay Safe.'),
+            //const Header(title: 'Bienvenue', subtitle: 'Scannez. Détectez. Restez en sécurité.'),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
@@ -29,7 +29,7 @@ class AccueilPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(32),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: Colors.black,
                                 blurRadius: 10,
                               )
                             ],
@@ -38,7 +38,7 @@ class AccueilPage extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(24),
                               child: Image.network(
-                                'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%20healthy%20food%20scanner%20app%20symbol%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus%2C%20the%20icon%20should%20take%20up%2070%25%20of%20the%20frame&width=200&height=200&seq=home-hero&orientation=squarish',
+                                'assets/images/logo.png',
                                 width: 96,
                                 height: 96,
                                 fit: BoxFit.cover,
@@ -47,13 +47,13 @@ class AccueilPage extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'Take Control of Your Health',
+                          'Prenez le contrôle de votre santé',
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          "Scan any product barcode to instantly check if it contains ingredients you're intolerant to. Your health companion is here!",
+                          "Scannez le code-barres de n'importe quel produit pour vérifier instantanément s'il contient des ingrédients auxquels vous êtes intolérant. Votre compagnon de santé est ici !",
                           style: TextStyle(color: Colors.black54, fontSize: 14),
                           textAlign: TextAlign.center,
                         ),
@@ -69,17 +69,43 @@ class AccueilPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
-                      children: const [
-                        FeatureTile(icon: Icons.qr_code_scanner, color1: Colors.green, color2: Colors.teal, title: 'Quick Scan', subtitle: 'Instant barcode recognition'),
-                        FeatureTile(icon: Icons.shield, color1: Colors.orange, color2: Colors.red, title: 'Safe Check', subtitle: 'Personalized alerts'),
-                        FeatureTile(icon: Icons.history, color1: Colors.purple, color2: Colors.pink, title: 'History', subtitle: 'Track your scans'),
-                        FeatureTile(icon: Icons.favorite, color1: Colors.blue, color2: Colors.indigo, title: 'Profile', subtitle: 'Manage intolerances'),
+                      children: [
+                        FeatureTile(
+                          icon: Icons.qr_code_scanner,
+                          color1: Colors.green, 
+                          color2: Colors.teal, 
+                          title: 'Scan', 
+                          subtitle: 'Reconnaissance des codes-barres', 
+                          onTap: () {
+                            Navigator.pushNamed(context, '/scanner');
+                          },
+                        ),
+                        FeatureTile(
+                          icon: Icons.history,
+                          color1: Colors.purple,
+                          color2: Colors.pink,
+                          title: 'Historique',
+                          subtitle: 'Suivez vos scans',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/questionnaire');
+                          },
+                        ),
+                        FeatureTile(
+                          icon: Icons.favorite,
+                          color1: Colors.blue,
+                          color2: Colors.indigo,
+                          title: 'Profile',
+                          subtitle: 'Gérer les intolérances',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                        ),
                       ],
+
                     ),
 
                     const SizedBox(height: 24),
 
-                    // Health Tip
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -109,10 +135,10 @@ class AccueilPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Health Tip', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+                                Text('Conseil santé', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Always read ingredient labels carefully. Hidden allergens can be found in unexpected places!',
+                                  'Lisez toujours attentivement les étiquettes des ingrédients. Des allergènes cachés peuvent se trouver dans des endroits inattendus !',
                                   style: TextStyle(color: Colors.black54, fontSize: 13),
                                 ),
                               ],
@@ -139,6 +165,7 @@ class FeatureTile extends StatelessWidget {
   final Color color2;
   final String title;
   final String subtitle;
+  final VoidCallback onTap;
 
   const FeatureTile({
     super.key,
@@ -147,11 +174,15 @@ class FeatureTile extends StatelessWidget {
     required this.color2,
     required this.title,
     required this.subtitle,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -176,6 +207,7 @@ class FeatureTile extends StatelessWidget {
           Text(title, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black)),
           Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54)),
         ],
+      ),
       ),
     );
   }
